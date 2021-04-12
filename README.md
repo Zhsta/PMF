@@ -1,6 +1,7 @@
 # pmf编程作业
 学号：2020223040005<br>
 姓名：赵小明<br>
+u.data是数据集<br>
 pmf.py 一共有三个功能函数load_data,rmse,fit.<br>
 load_data用来载入MovieLens 100k数据集，并且根据传入的ratio参数，将数据集分为训练集和测试集<br>
 rmse用来计算当前的U,V矩阵与rating的rmse<br>
