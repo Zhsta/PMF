@@ -11,7 +11,7 @@ def load_data(filename, ratio=0.8):
     u_index = 0
     i_index = 0
     data = []
-    #使用字典，将对应的userId和itemId转化为数字，并将用户、上坪、评分加入到data列表
+    #使用字典，将对应的userId和itemId转化为数字，并将用户编号、商品编号、评分加入到data列表
     with open(filename, 'r') as f:
         for line in f.readlines():
             a = line.split()
