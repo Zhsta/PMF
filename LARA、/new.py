@@ -158,38 +158,35 @@ def train():
     sess.run(tf.global_variables_initializer())
 
     for it in range(800):
-      #设定生成器和判别器训练的次数
-        discriminator_range = 1
-        generator_range = 1
-        for discriminator_it in range(discriminator_range):
-            index = 0
-            #防止访问negdata越界
-            while index < 253236:
-                if index + batch_size <= 253236:
-                    train_user_batch, train_item_batch, train_attr_batch, train_user_emb_batch = data_loads.get_train_data(
-                        index, index + batch_size)
-                    counter_user_batch, counter_item_batch, counter_attr_batch, counter_user_emb_batch = data_loads.get_neg_data(
-                        index, index + batch_size)
-                index = index + batch_size
+    #设定生成器和判别器训练的次数
 
-                _, discriminator_loss_now, fake_us = sess.run([discriminator_solver, discriminator_loss, fake_user_emb],
-                                                  feed_dict={attribute_id: train_attr_batch,
-                                                             real_user_emb: train_user_emb_batch,
-                                                             neg_attribute_id: counter_attr_batch,
-                                                             neg_user_emb: counter_user_emb_batch
-                                                             })
-            print(discriminator_loss_now)
+        index = 0
+        #防止访问negdata越界
+        while index < 253236:
+            if index + batch_size <= 253236:
+                train_user_batch, train_item_batch, train_attr_batch, train_user_emb_batch = data_loads.get_train_data(
+                    index, index + batch_size)
+                counter_user_batch, counter_item_batch, counter_attr_batch, counter_user_emb_batch = data_loads.get_neg_data(
+                    index, index + batch_size)
+            index = index + batch_size
 
-        for generator_it in range(generator_range):
-            index = 0
-            while index < 253236:
-                if index + batch_size <= 253236:
-                    train_user_batch, train_item_batch, train_attr_batch, train_user_emb_batch = data_loads.get_train_data(
-                        index, index + batch_size)
-                index = index + batch_size
+            _, discriminator_loss_now, fake_us = sess.run([discriminator_solver, discriminator_loss, fake_user_emb],
+                                              feed_dict={attribute_id: train_attr_batch,
+                                                         real_user_emb: train_user_emb_batch,
+                                                         neg_attribute_id: counter_attr_batch,
+                                                         neg_user_emb: counter_user_emb_batch
+                                                         })
+        print(discriminator_loss_now)
 
-                _, generator_loss_now = sess.run([generator_solver, generator_loss], feed_dict={attribute_id: train_attr_batch})
-            print(generator_loss_now)
+        index = 0
+        while index < 253236:
+            if index + batch_size <= 253236:
+                train_user_batch, train_item_batch, train_attr_batch, train_user_emb_batch = data_loads.get_train_data(
+                    index, index + batch_size)
+            index = index + batch_size
+
+            _, generator_loss_now = sess.run([generator_solver, generator_loss], feed_dict={attribute_id: train_attr_batch})
+        print(generator_loss_now)
         #每训练一轮输出评价
         if it % 1 == 0:
             print('迭代次数'+str(it+1))
